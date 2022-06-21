@@ -16,6 +16,6 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
     void softDeleteById(@Param("id") Long id);
 
 
-    @Query(value = "select AuthUser from AuthUser where username = :domain or email = :domain")
+    @Query(value = "from AuthUser where username = :domain or email = :domain")
     Optional<AuthUser> findByUsernameOrEmail(@Param("domain") String domain);
 }
