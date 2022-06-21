@@ -1,19 +1,26 @@
 package itransition.intern.itransitioncollection.service.authUser;
 
+import itransition.intern.itransitioncollection.configuration.encryption.PasswordEncoderConfigurer;
 import itransition.intern.itransitioncollection.dtos.auth.AuthUserCreateDto;
 import itransition.intern.itransitioncollection.dtos.auth.AuthUserDto;
 import itransition.intern.itransitioncollection.dtos.auth.AuthUserUpdateDto;
+import itransition.intern.itransitioncollection.entity.authUser.AuthUser;
+import itransition.intern.itransitioncollection.exception.NotFoundException;
 import itransition.intern.itransitioncollection.mapper.auth.AuthUserMapper;
 import itransition.intern.itransitioncollection.repository.auth.AuthUserRepository;
 import itransition.intern.itransitioncollection.service.base.AbstractService;
 import itransition.intern.itransitioncollection.service.base.BaseService;
 import itransition.intern.itransitioncollection.service.base.GenericCrudService;
-import org.springframework.security.core.userdetails.UserDetails;
+import itransition.intern.itransitioncollection.entity.authUser.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthUserService extends AbstractService<AuthUserRepository, AuthUserMapper>
@@ -21,39 +28,84 @@ public class AuthUserService extends AbstractService<AuthUserRepository, AuthUse
         UserDetailsService,
         BaseService {
 
+    private final PasswordEncoder encoder;
 
     public AuthUserService(AuthUserRepository repository,
-                           AuthUserMapper mapper) {
+                           AuthUserMapper mapper,
+                           PasswordEncoder encoder) {
         super(repository, mapper);
+        this.encoder = encoder;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+    public UserDetails loadUserByUsername(String domain) throws UsernameNotFoundException {
+        return new UserDetails(repository.findByUsernameOrEmail(domain)
+                .orElseThrow(() -> new NotFoundException("USER_NOT_FOUND")));
     }
 
     @Override
     public Long create(AuthUserCreateDto createDto) {
-        return null;
+        checkPassword(createDto.getPassword(), createDto.getConfirmPassword());
+        AuthUser authUser = mapper.fromCreatDto(createDto);
+        authUser.setPassword(encoder.encode(authUser.getPassword()));
+        AuthUser save = repository.save(authUser);
+        return save.getId();
     }
 
     @Override
-    public Long update(AuthUserUpdateDto createDto) {
-        return null;
+    public Long update(AuthUserUpdateDto updateDto) {
+        getAuthUserByIdAndCheckExistence(updateDto.getId());
+        AuthUser authUser = mapper.fromUpdateDto(updateDto);
+        repository.save(authUser);
+        return authUser.getId();
     }
 
     @Override
     public Void delete(Long id) {
+        repository.softDeleteById(id);
         return null;
     }
 
     @Override
     public AuthUserDto get(Long id) {
-        return null;
+        AuthUser authUser = getAuthUserByIdAndCheckExistence(id);
+        return mapper.toDto(authUser);
     }
 
     @Override
     public List<AuthUserDto> getAll() {
-        return null;
+        return mapper.toDto(repository.findAll());
     }
+
+
+    public void blockOrUnblock(Long id) {
+        AuthUser authUser = getAuthUserByIdAndCheckExistence(id);
+        authUser.setBlocked(authUser.getBlocked() ? Boolean.TRUE : Boolean.FALSE);
+        repository.save(authUser);
+    }
+
+    private AuthUser getAuthUserByIdAndCheckExistence(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("USER_NOT_FOUND"));
+    }
+
+    public void blockOrUnblock(List<Long> ids) {
+        for (Long id : ids) {
+            getAuthUserByIdAndCheckExistence(id);
+            blockOrUnblock(id);
+        }
+    }
+
+    public void delete(List<Long> ids) {
+        for (Long id : ids) {
+            getAuthUserByIdAndCheckExistence(id);
+            delete(id);
+        }
+    }
+
+    private void checkPassword(String password, String confirmPassword) {
+        if (!password.equals(confirmPassword)) throw new RuntimeException("PASSWORD_NOT_MATCHES");
+    }
+
+
 }

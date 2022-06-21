@@ -10,8 +10,10 @@ public class AuthUserCreateDto implements BaseDto {
 
     private String username;
 
+    private String email;
+
     private String password;
 
-    private String email;
+    private String confirmPassword;
 
 }

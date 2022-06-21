@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public abstract class AbstractService<R extends BaseRepository, M extends BaseMapper> {
 
-    private final R repository;
+    protected final R repository;
 
-    private final M mapper;
+    protected final M mapper;
 
 }

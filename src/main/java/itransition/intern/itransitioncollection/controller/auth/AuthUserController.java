@@ -20,7 +20,7 @@ public class AuthUserController extends AbstractController<AuthUserService> {
 
     @GetMapping("/create")
     public String createPage() {
-        return "auth/register";
+        return "user/create";
     }
 
     @PostMapping("/create")

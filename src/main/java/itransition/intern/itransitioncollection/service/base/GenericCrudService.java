@@ -20,7 +20,7 @@ public interface GenericCrudService<D extends GenericDto,
 
     public K create(CD createDto);
 
-    public K update(UD createDto);
+    public K update(UD updateDto);
 
     public Void delete(K id);
 

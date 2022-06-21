@@ -3,7 +3,6 @@ package itransition.intern.itransitioncollection.mapper.base;
 import itransition.intern.itransitioncollection.dtos.base.BaseDto;
 import itransition.intern.itransitioncollection.dtos.base.GenericDto;
 import itransition.intern.itransitioncollection.entity.base.BaseEntity;
-import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -18,6 +17,6 @@ public interface GenericMapper<E extends BaseEntity,
 
     E fromCreatDto(CD createDto);
 
-    E fromUpdateDto(UD updateDto, @MappingTarget E entity);
+    E fromUpdateDto(UD updateDto);
 
 }

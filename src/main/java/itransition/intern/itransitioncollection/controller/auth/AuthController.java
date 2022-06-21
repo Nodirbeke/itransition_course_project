@@ -19,7 +19,7 @@ public class AuthController {
         return "/logout";
     }
 
-    @GetMapping({"/register", "/create"})
+    @GetMapping("/register")
     public String registrationPage() {
         return "user/create";
     }
