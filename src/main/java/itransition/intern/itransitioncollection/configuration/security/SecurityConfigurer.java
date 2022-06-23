@@ -64,7 +64,8 @@ public class SecurityConfigurer {
                 .formLogin(httpSecurityFormLoginConfigurer ->
                         httpSecurityFormLoginConfigurer
                                 .loginPage("/auth/login")
-                                .defaultSuccessUrl("/auth/home", true)
+                                .failureForwardUrl("/error/error")
+                                .defaultSuccessUrl("/home", true)
                                 .loginProcessingUrl("/auth/login"))
 
                 .logout(httpSecurityLogoutConfigurer ->

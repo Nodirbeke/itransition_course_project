@@ -66,7 +66,7 @@ public class CollectionService extends AbstractService<CollectionRepository, Col
     }
 
     private void checkOwnership(Collection collection) throws PermissionDeniedException {
-        if (!Objects.equals(securityAuditorAware.getCurrentAuditor().get(), collection.getOwnerId().getId())
+        if (!Objects.equals(securityAuditorAware.getCurrentAuditor().get(), collection.getAuthUser().getId())
                 || securityAuditorAware.getCurrentAuditor().isEmpty()) {
             throw new PermissionDeniedException("PERMISSION_DENIED");
         }

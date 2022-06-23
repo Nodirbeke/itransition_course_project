@@ -15,24 +15,24 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name", "owner_id"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name", "auth_user_id"}))
 public class Collection extends Auditable implements BaseEntity {
 
     @Column(nullable = false)
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", referencedColumnName = "id")
-    private AuthUser ownerId;
+    @JoinColumn
+    private AuthUser authUser;
 
     @Column(nullable = false)
     private String description;
 
     @OneToOne
-    @JoinColumn(name = "topic_id", referencedColumnName = "id")
-    private Topic topicId;
+    @JoinColumn
+    private Topic topic;
 
-    @Column(name = "image_path", nullable = false)
+    @Column(nullable = false)
     private String imagePath;
 
 }

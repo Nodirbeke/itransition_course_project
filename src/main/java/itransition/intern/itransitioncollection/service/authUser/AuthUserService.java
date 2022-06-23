@@ -4,23 +4,19 @@ import itransition.intern.itransitioncollection.dtos.auth.AuthUserCreateDto;
 import itransition.intern.itransitioncollection.dtos.auth.AuthUserDto;
 import itransition.intern.itransitioncollection.dtos.auth.AuthUserUpdateDto;
 import itransition.intern.itransitioncollection.entity.authUser.AuthUser;
+import itransition.intern.itransitioncollection.entity.authUser.UserDetails;
+import itransition.intern.itransitioncollection.enums.AuthRole;
 import itransition.intern.itransitioncollection.exception.NotFoundException;
 import itransition.intern.itransitioncollection.mapper.auth.AuthUserMapper;
 import itransition.intern.itransitioncollection.repository.auth.AuthUserRepository;
 import itransition.intern.itransitioncollection.service.base.AbstractService;
 import itransition.intern.itransitioncollection.service.base.BaseService;
 import itransition.intern.itransitioncollection.service.base.GenericCrudService;
-import itransition.intern.itransitioncollection.entity.authUser.UserDetails;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -51,14 +47,15 @@ public class AuthUserService extends AbstractService<AuthUserRepository, AuthUse
         checkPassword(createDto.getPassword(), createDto.getConfirmPassword());
         AuthUser authUser = mapper.fromCreatDto(createDto);
         authUser.setPassword(encoder.encode(authUser.getPassword()));
+        authUser.setRole(AuthRole.USER);
         AuthUser save = repository.save(authUser);
         return save.getId();
     }
 
     @Override
     public Long update(AuthUserUpdateDto updateDto) {
-        getAuthUserByIdAndCheckExistence(updateDto.getId());
-        AuthUser authUser = mapper.fromUpdateDto(updateDto);
+        AuthUser target = getAuthUserById(updateDto.getId());
+        AuthUser authUser = mapper.fromUpdateDto(updateDto, target);
         repository.save(authUser);
         return authUser.getId();
     }
@@ -72,7 +69,7 @@ public class AuthUserService extends AbstractService<AuthUserRepository, AuthUse
 
     @Override
     public AuthUserDto get(Long id) {
-        AuthUser authUser = getAuthUserByIdAndCheckExistence(id);
+        AuthUser authUser = getAuthUserById(id);
         return mapper.toDto(authUser);
     }
 
@@ -83,26 +80,30 @@ public class AuthUserService extends AbstractService<AuthUserRepository, AuthUse
 
 
     public void blockOrUnblock(Long id) {
-        AuthUser authUser = getAuthUserByIdAndCheckExistence(id);
-        authUser.setBlocked(authUser.getBlocked() ? Boolean.TRUE : Boolean.FALSE);
+        AuthUser authUser = getAuthUserById(id);
+        authUser.setBlocked(!authUser.isBlocked());
         repository.save(authUser);
     }
 
-    private AuthUser getAuthUserByIdAndCheckExistence(Long id) {
+    private AuthUser getAuthUserById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("USER_NOT_FOUND"));
     }
 
+    private void checkExistence(Long id) {
+        if (!repository.existsById(id)) throw new NotFoundException("USER_NOT_FOUND");
+    }
+
     public void blockOrUnblock(List<Long> ids) {
         for (Long id : ids) {
-            getAuthUserByIdAndCheckExistence(id);
+            checkExistence(id);
             blockOrUnblock(id);
         }
     }
 
     public void delete(List<Long> ids) {
         for (Long id : ids) {
-            getAuthUserByIdAndCheckExistence(id);
+            getAuthUserById(id);
             delete(id);
         }
     }

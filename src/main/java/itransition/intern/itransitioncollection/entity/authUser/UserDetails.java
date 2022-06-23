@@ -8,10 +8,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -37,7 +34,7 @@ public class UserDetails implements org.springframework.security.core.userdetail
         this.password = user.getPassword();
         this.username = user.getUsername();
         this.email = user.getEmail();
-        this.blocked = user.getBlocked();
+        this.blocked = user.isBlocked();
         this.role = processAuthorities(user.getRole());
     }
 
@@ -62,21 +59,21 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return !this.blocked;
+        return true;
     }
 }

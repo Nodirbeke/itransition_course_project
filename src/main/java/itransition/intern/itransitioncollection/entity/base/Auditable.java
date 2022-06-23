@@ -14,6 +14,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
@@ -22,32 +23,31 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Auditable {
+public class Auditable implements BaseEntity, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     private Long id;
 
+    @Column
     @CreatedBy
-    @Column(name = "created_by")
     private Long createdBy;
 
     @CreatedDate
     @CreationTimestamp
-    @Column(name = "created_at", columnDefinition = "timestamp default now()")
-    private LocalDateTime createAt;
+    @Column(columnDefinition = "timestamp with time zone default now()")
+    private LocalDateTime createdAt;
 
+    @Column
     @LastModifiedBy
-    @Column(name = "update_by")
-    private Long updateBy;
+    private Long updatedBy;
 
+    @Column
     @UpdateTimestamp
     @LastModifiedDate
-    @Column(name = "updated_at")
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
 
-    @Column(name = "is_deleted", columnDefinition = "bool default false")
-    private Boolean deleted;
+    @Column(columnDefinition = "bool default 'false'")
+    private boolean deleted;
 
 }

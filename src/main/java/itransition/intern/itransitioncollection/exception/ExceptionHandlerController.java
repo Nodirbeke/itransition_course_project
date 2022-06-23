@@ -13,13 +13,23 @@ import javax.servlet.http.HttpServletRequest;
 public class ExceptionHandlerController {
 
     @ExceptionHandler(value = NotFoundException.class)
-    public String notFoundHandler() {
-        return "error/404";
+    public ModelAndView notFoundHandler(HttpServletRequest req, Exception ex) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("exception", ex);
+        mav.addObject("url", req.getRequestURL());
+        mav.setViewName("error/error");
+        return mav;
+//        return "error/404";
     }
 
     @ExceptionHandler(value = PermissionDeniedException.class)
-    public String forbiddenHandler() {
-        return "error/403";
+    public ModelAndView forbiddenHandler(HttpServletRequest req, Exception ex) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("exception", ex);
+        mav.addObject("url", req.getRequestURL());
+        mav.setViewName("error/error");
+        return mav;
+//        return "error/403";
     }
 
     @ExceptionHandler(value = Exception.class)

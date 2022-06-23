@@ -10,23 +10,26 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Where(clause = "deleted is false")
 public class AuthUser extends Auditable implements BaseEntity {
 
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(name = "full_name")
+    @Column
     private String fullName;
 
+    @Column
     private String password;
 
     @Column(nullable = false, unique = true)
@@ -36,8 +39,8 @@ public class AuthUser extends Auditable implements BaseEntity {
     @Column(columnDefinition = "varchar default 'USER'")
     private AuthRole role;
 
-    @Column(columnDefinition = "bool default false")
-    private Boolean blocked;
+    @Column(columnDefinition = "bool default 'false'")
+    private boolean blocked;
 
     @OneToMany
     private List<Collection> collections;
