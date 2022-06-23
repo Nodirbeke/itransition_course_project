@@ -16,12 +16,12 @@ public class AuthController {
 
     @GetMapping("/logout")
     public String logoutPage() {
-        return "/logout";
+        return "auth/logout";
     }
 
     @GetMapping("/register")
     public String registrationPage() {
-        return "user/create";
+        return "user/register";
     }
 
 }

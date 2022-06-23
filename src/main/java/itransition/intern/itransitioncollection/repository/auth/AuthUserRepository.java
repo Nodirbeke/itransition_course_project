@@ -9,13 +9,20 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseRepository {
     @Modifying
-    @Query(value = "update AuthUser set deleted = true where id = :id")
-    void softDeleteById(@Param("id") Long id);
+    @Query(value = "update AuthUser " +
+            "set deleted = true, " +
+            "username = concat(username,:uuid), " +
+            "email = concat(email,:uuid) " +
+            "where id = :id")
+    void softDeleteById(@Param("id") Long id, @Param("uuid") UUID uuid);
 
 
-    @Query(value = "from AuthUser where username = :domain or email = :domain")
+    @Query(value = "from AuthUser " +
+            "where username = :domain " +
+            "or email = :domain")
     Optional<AuthUser> findByUsernameOrEmail(@Param("domain") String domain);
 }

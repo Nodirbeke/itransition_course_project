@@ -1,14 +1,16 @@
 package itransition.intern.itransitioncollection.dtos.auth;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginDto {
 
     private String username;
 
-    private String  password;
+    private String password;
 
 }

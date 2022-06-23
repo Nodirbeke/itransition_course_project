@@ -1,20 +1,116 @@
-.gradient-custom-3 {
-  /* fallback for old browsers */
-  background: #84fab0;
-
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5));
-
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5))
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-.gradient-custom-4 {
-  /* fallback for old browsers */
-  background: #84fab0;
 
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1));
+.container {
+    width: 544px;
+    height: 100%;
+    padding: 20px 55px;
+    display: block;
+    margin: 30px auto;
+    text-align: center;
+    background: #ffffff;
+    box-shadow: 0px 0px 25px 10px #f9f9f3;
+}
 
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1))
+.goBack {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.goBack a {
+    padding: 10px 20px;
+    background: lime;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 17px;
+    line-height: 20px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.register-text h3 {
+    font-family: Josefin Sans;
+    font-size: 32px;
+    line-height: 37px;
+    color: #000000;
+}
+
+.register-text p {
+    font-family: Josefin Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 20px;
+    color: #9096b2;
+    margin: 7px 0 37px 0;
+}
+
+.register-input input {
+    display: block;
+    margin: 23px auto;
+    padding: 15px 0 18px 13px;
+    width: 432px;
+    height: 52px;
+    background: #ffffff;
+    border: 1px solid #c2c5e1;
+    box-sizing: border-box;
+    border-radius: 2px;
+    outline: none;
+}
+
+.register-input input::placeholder {
+    font-family: Josefin Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    color: #9096b2;
+}
+
+.register-input p {
+    font-family: Josefin Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 20px;
+    color: #9096b2;
+    margin: 13px 0 23px 0;
+    text-align: left;
+}
+
+.register-button button {
+    width: 100%;
+    height: 47px;
+    background: lime;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 17px;
+    line-height: 20px;
+    color: #ffffff;
+    border: none;
+}
+
+.register-button p {
+    font-family: Josefin Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 20px;
+    color: #9096b2;
+    margin-top: 28px;
+}
+
+@media (max-width: 586px) {
+    .container {
+        width: 350px;
+        padding: 55px 10px;
+    }
+    .register-input input {
+        width: 100%;
+    }
 }

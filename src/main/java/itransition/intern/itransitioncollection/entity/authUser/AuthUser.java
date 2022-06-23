@@ -33,10 +33,10 @@ public class AuthUser extends Auditable implements BaseEntity {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar default USER")
+    @Column(columnDefinition = "varchar default 'USER'")
     private AuthRole role;
 
-    @Column(columnDefinition = "BOOLEAN default false")
+    @Column(columnDefinition = "bool default false")
     private Boolean blocked;
 
     @OneToMany

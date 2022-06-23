@@ -47,7 +47,7 @@ public class Auditable {
     @Column(name = "updated_at")
     private LocalDateTime updateAt;
 
-    @Column(name = "is_deleted", columnDefinition = "BOOLEAN default false")
+    @Column(name = "is_deleted", columnDefinition = "bool default false")
     private Boolean deleted;
 
 }

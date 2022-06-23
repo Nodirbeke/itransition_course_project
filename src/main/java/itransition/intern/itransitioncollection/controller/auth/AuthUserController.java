@@ -18,15 +18,10 @@ public class AuthUserController extends AbstractController<AuthUserService> {
         super(service);
     }
 
-    @GetMapping("/create")
-    public String createPage() {
-        return "user/create";
-    }
-
-    @PostMapping("/create")
-    public String create(HttpServletRequest request, @ModelAttribute AuthUserCreateDto dto) {
+    @PostMapping({"/create","/register"})
+    public String create(@ModelAttribute AuthUserCreateDto dto) {
         service.create(dto);
-        return "redirect:" + request.getHeader("Referer");
+        return "redirect:auth/login";
     }
 
     @GetMapping({"/detail/{id}", "/get/{id}"})

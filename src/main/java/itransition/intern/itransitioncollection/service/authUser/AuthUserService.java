@@ -1,6 +1,5 @@
 package itransition.intern.itransitioncollection.service.authUser;
 
-import itransition.intern.itransitioncollection.configuration.encryption.PasswordEncoderConfigurer;
 import itransition.intern.itransitioncollection.dtos.auth.AuthUserCreateDto;
 import itransition.intern.itransitioncollection.dtos.auth.AuthUserDto;
 import itransition.intern.itransitioncollection.dtos.auth.AuthUserUpdateDto;
@@ -12,15 +11,17 @@ import itransition.intern.itransitioncollection.service.base.AbstractService;
 import itransition.intern.itransitioncollection.service.base.BaseService;
 import itransition.intern.itransitioncollection.service.base.GenericCrudService;
 import itransition.intern.itransitioncollection.entity.authUser.UserDetails;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthUserService extends AbstractService<AuthUserRepository, AuthUserMapper>
@@ -38,10 +39,12 @@ public class AuthUserService extends AbstractService<AuthUserRepository, AuthUse
     }
 
     @Override
-    public UserDetails loadUserByUsername(String domain) throws UsernameNotFoundException {
-        return new UserDetails(repository.findByUsernameOrEmail(domain)
-                .orElseThrow(() -> new NotFoundException("USER_NOT_FOUND")));
+    public UserDetails loadUserByUsername(String domain) {
+        AuthUser authUser = repository.findByUsernameOrEmail(domain)
+                .orElseThrow(() -> new NotFoundException("USER_NOT_FOUND"));
+        return new UserDetails(authUser);
     }
+
 
     @Override
     public Long create(AuthUserCreateDto createDto) {
@@ -62,7 +65,8 @@ public class AuthUserService extends AbstractService<AuthUserRepository, AuthUse
 
     @Override
     public Void delete(Long id) {
-        repository.softDeleteById(id);
+        UUID uuid = UUID.randomUUID();
+        repository.softDeleteById(id, uuid);
         return null;
     }
 

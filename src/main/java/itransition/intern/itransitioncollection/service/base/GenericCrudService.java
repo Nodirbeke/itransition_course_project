@@ -2,6 +2,7 @@ package itransition.intern.itransitioncollection.service.base;
 
 import itransition.intern.itransitioncollection.dtos.base.BaseDto;
 import itransition.intern.itransitioncollection.dtos.base.GenericDto;
+import itransition.intern.itransitioncollection.exception.PermissionDeniedException;
 
 import java.io.Serializable;
 
@@ -22,7 +23,7 @@ public interface GenericCrudService<D extends GenericDto,
 
     public K update(UD updateDto);
 
-    public Void delete(K id);
+    public Void delete(K id) throws PermissionDeniedException;
 
 
 }
