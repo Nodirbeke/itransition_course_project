@@ -45,4 +45,9 @@ public class CommentService extends AbstractService<CommentRepository, CommentMa
     public List<CommentDto> getAll() {
         return null;
     }
+
+    @Override
+    public List<CommentDto> getAll(Long id) {
+        return null;
+    }
 }

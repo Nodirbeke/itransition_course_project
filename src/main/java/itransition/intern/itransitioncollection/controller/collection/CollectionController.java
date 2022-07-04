@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Lob;
 import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping("/collection")
 public class CollectionController extends AbstractController<CollectionService> {
@@ -20,10 +22,11 @@ public class CollectionController extends AbstractController<CollectionService> 
 
     @GetMapping({"/create"})
     public String createPage() {
-        return "redirect:collection/create";
+        return "collection/create";
     }
+
     @PostMapping({"/create"})
-    public String create(HttpServletRequest request, @ModelAttribute CollectionCreateDto dto) {
+    public String create(@ModelAttribute CollectionCreateDto dto) {
         service.create(dto);
         return "redirect:collection/list";
     }
@@ -34,9 +37,9 @@ public class CollectionController extends AbstractController<CollectionService> 
         return "collection/detail";
     }
 
-    @GetMapping({"/list", "/getAll"})
-    public String getAll(Model model) {
-        model.addAttribute("collection", service.getAll());
+    @GetMapping({"/list/{userId}", "/getAll/{userId}"})
+    public String getAll(@PathVariable Long userId, Model model) {
+        model.addAttribute("collection", service.getAll(userId));
         return "collection/list";
     }
 

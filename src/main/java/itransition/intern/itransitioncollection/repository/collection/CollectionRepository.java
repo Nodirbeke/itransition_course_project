@@ -7,8 +7,18 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+import java.util.UUID;
+
 public interface CollectionRepository extends JpaRepository<Collection, Long>, BaseRepository {
     @Modifying
-    @Query(value = "update Collection set deleted= true where id = :id")
-    void softDeleteById(@Param("id") Long id);
+    @Query(value = "update Collection " +
+            "set deleted= true, " +
+            "authUser = concat(authUser,:uuid), " +
+            "name = concat(name,:uuid) " +
+            "where id = :id")
+    void softDeleteById(@Param("id") Long id, @Param("uuid") UUID uuid);
+
+
+    List<Collection> findCollectionByAuthUser(Long id);
 }

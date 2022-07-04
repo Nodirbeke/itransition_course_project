@@ -1,5 +1,7 @@
-package itransition.intern.itransitioncollection.exception;
+package itransition.intern.itransitioncollection.controller.exceptionHandeler;
 
+import itransition.intern.itransitioncollection.exception.NotFoundException;
+import itransition.intern.itransitioncollection.exception.PermissionDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -19,7 +21,6 @@ public class ExceptionHandlerController {
         mav.addObject("url", req.getRequestURL());
         mav.setViewName("error/error");
         return mav;
-//        return "error/404";
     }
 
     @ExceptionHandler(value = PermissionDeniedException.class)
@@ -29,7 +30,6 @@ public class ExceptionHandlerController {
         mav.addObject("url", req.getRequestURL());
         mav.setViewName("error/error");
         return mav;
-//        return "error/403";
     }
 
     @ExceptionHandler(value = Exception.class)

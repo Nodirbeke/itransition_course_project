@@ -11,4 +11,7 @@ public class CommentController extends AbstractController<CommentService> {
     public CommentController(CommentService service) {
         super(service);
     }
+
+
+
 }

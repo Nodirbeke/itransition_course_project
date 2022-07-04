@@ -10,9 +10,4 @@ public class NotFoundException extends RuntimeException {
         super(message);
     }
 
-    @Override
-    public synchronized Throwable fillInStackTrace() {
-        return null;
-    }
-
 }

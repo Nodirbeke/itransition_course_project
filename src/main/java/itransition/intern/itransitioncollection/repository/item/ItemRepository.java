@@ -5,5 +5,5 @@ import itransition.intern.itransitioncollection.repository.base.BaseRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface ItemRepository extends JpaRepository<Item, Long>, BaseRepository {
+public interface ItemRepository extends  JpaRepository<Item, Long>, BaseRepository {
 }

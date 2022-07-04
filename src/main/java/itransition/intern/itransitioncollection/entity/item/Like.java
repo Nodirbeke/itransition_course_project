@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 
@@ -13,19 +16,23 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Indexed(index = "idx_likes")
 @Table(name = "likes", uniqueConstraints = {@UniqueConstraint(columnNames = {"auth_user_id", "item_id"})})
 public class Like {
 
     @Id
+    @DocumentId
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
+    @ContainedIn
+    @ManyToOne(fetch = FetchType.LAZY)
     private AuthUser authUser;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
+    @ContainedIn
+    @ManyToOne(fetch = FetchType.LAZY)
     private Item item;
 
 }

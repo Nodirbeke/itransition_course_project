@@ -2,18 +2,25 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/itransition_collection
-    username: doston
-    password: doston123
+    username: postgres
+    password: nodir123
 
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
     open-in-view: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
         format_sql: true
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+        search:
+          default:
+            indexmanager: elasticsearch
+            elasticsearch:
+              host: http://192.168.0.103:9200
+              index_schema_management_strategy: drop-and-create
+              required_index_status: yellow
 
 server:
   port: 8080

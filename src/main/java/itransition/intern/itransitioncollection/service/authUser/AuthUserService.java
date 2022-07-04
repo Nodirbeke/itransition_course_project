@@ -41,7 +41,6 @@ public class AuthUserService extends AbstractService<AuthUserRepository, AuthUse
         return new UserDetails(authUser);
     }
 
-
     @Override
     public Long create(AuthUserCreateDto createDto) {
         checkPassword(createDto.getPassword(), createDto.getConfirmPassword());
@@ -79,19 +78,21 @@ public class AuthUserService extends AbstractService<AuthUserRepository, AuthUse
     }
 
 
+    @Override
+    public List<AuthUserDto> getAll(Long id) {
+        return null;
+    }
+
+
     public void blockOrUnblock(Long id) {
         AuthUser authUser = getAuthUserById(id);
         authUser.setBlocked(!authUser.isBlocked());
         repository.save(authUser);
     }
 
-    private AuthUser getAuthUserById(Long id) {
+    public AuthUser getAuthUserById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("USER_NOT_FOUND"));
-    }
-
-    private void checkExistence(Long id) {
-        if (!repository.existsById(id)) throw new NotFoundException("USER_NOT_FOUND");
     }
 
     public void blockOrUnblock(List<Long> ids) {
@@ -106,6 +107,10 @@ public class AuthUserService extends AbstractService<AuthUserRepository, AuthUse
             getAuthUserById(id);
             delete(id);
         }
+    }
+
+    public void checkExistence(Long id) {
+        if (!repository.existsById(id)) throw new NotFoundException("USER_NOT_FOUND");
     }
 
     private void checkPassword(String password, String confirmPassword) {

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 
 @Mapper(componentModel = "spring")
-@Component
 public interface CollectionMapper extends GenericMapper<Collection, CollectionDto, CollectionCreateDto, CollectionUpdateDto>, BaseMapper {
 
 }
