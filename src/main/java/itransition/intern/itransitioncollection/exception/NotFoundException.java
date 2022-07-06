@@ -10,4 +10,8 @@ public class NotFoundException extends RuntimeException {
         super(message);
     }
 
+    public NotFoundException() {
+        super("NOT_FOUND");
+    }
+
 }

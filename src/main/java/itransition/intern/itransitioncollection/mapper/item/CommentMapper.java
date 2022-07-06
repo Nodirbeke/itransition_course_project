@@ -10,7 +10,6 @@ import org.mapstruct.Mapper;
 import org.springframework.stereotype.Controller;
 
 
-@Controller
 @Mapper(componentModel = "spring")
 public interface CommentMapper extends GenericMapper<Comment, CommentDto, CommentCreateDto, CommentUpdateDto>, BaseMapper {
 
